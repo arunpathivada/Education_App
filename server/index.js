@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "https://education-app-mu.vercel.app/",
+    origin: "*",
     methods: "GET, POST, PUT, DELETE",
     credentials: true,
   })
