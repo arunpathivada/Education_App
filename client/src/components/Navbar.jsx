@@ -95,6 +95,7 @@ const Popup = styled.div`
   padding: 10px;
   border-radius: 10px;
   z-index: 1;
+  transition: 1s ease;
 `;
 const Items = styled.div`
   overflow-y: auto;
@@ -117,6 +118,7 @@ const ClassItem = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 8px;
+
   &:hover {
     background-color:white;
     border-radius: 5px;
@@ -129,6 +131,7 @@ const SubjectItem = styled.div`
   background-color:lightblue;
   margin: 3px;
   border-radius: 2px;
+  cursor: pointer;
   padding: 5px;
   font-weight: 300;
   &:hover{
@@ -143,8 +146,10 @@ const Title = styled.h3`
   margin-bottom: 10px;
 `
 
-const classesData = [];
 
+                       
+const classesData = [];
+console.log(data);                  
 for (const className in data) {
   if (data.hasOwnProperty(className)) {
     const subjects = Object.keys(data[className].subjects);
@@ -152,6 +157,8 @@ for (const className in data) {
   }
 }
 console.log(classesData);
+
+
 
 const Navbar = () => {
   const [popUpPosition, setPopupPosition] = useState(false);

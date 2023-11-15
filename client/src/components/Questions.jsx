@@ -47,7 +47,7 @@ const Quiz = ({ questions }) => {
 
   return (
     <QuizContainer>
-      {questions.map((question, questionIndex) => (
+      { questions && questions.map((question, questionIndex) => (
         <Question key={questionIndex}>
           <QuestionText>{question.question}</QuestionText>
           <OptionsList>

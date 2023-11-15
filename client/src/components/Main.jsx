@@ -64,6 +64,7 @@ const ClassItem = styled.div`
 margin: 15px;
 font-weight: 600;
 display: flex;
+padding: 10px;
 align-items: center;
 margin-left: 40px;
 justify-content: space-between;

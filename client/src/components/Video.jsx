@@ -6,7 +6,7 @@ const Video = ({videoIds}) => {
 
   const opts = {
     height: '390',
-    width: '640',
+    width: '800',
     playerVars: {
        autoplay: 0,
     },
