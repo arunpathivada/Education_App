@@ -7,6 +7,8 @@ import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import data from "../data";
 import { useDispatch, useSelector } from 'react-redux';
 import { update1,update2 } from '../redux/dataSlice';
+import { useMemo } from 'react';
+import axios from 'axios';
 
 const Container = styled.div`
   height: 50px;
@@ -147,19 +149,6 @@ const Title = styled.h3`
 `
 
 
-                       
-const classesData = [];
-console.log(data);                  
-for (const className in data) {
-  if (data.hasOwnProperty(className)) {
-    const subjects = Object.keys(data[className].subjects);
-    classesData.push({ name: className, subjects });
-  }
-}
-console.log(classesData);
-
-
-
 const Navbar = () => {
   const [popUpPosition, setPopupPosition] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
@@ -167,53 +156,89 @@ const Navbar = () => {
   const handleClick = () => {
     setPopupPosition(!popUpPosition);
   };
-  const dispatch  = useDispatch();
 
-  const handleClassClick = (clickedClass,e) => {
+  const dispatch = useDispatch();
+
+  const handleClassClick = (clickedClass, e) => {
     e.preventDefault();
     const newNavClass = e.target.textContent;
-    dispatch(update1({navClass:newNavClass}));
-    setSelectedClass(clickedClass === selectedClass ? null : clickedClass);   
+    dispatch(update1({ navClass: newNavClass }));
+    setSelectedClass(clickedClass === selectedClass ? null : clickedClass);
   };
-  const handleSubject = (e)=>{
+
+  const handleSubject = (e) => {
     e.preventDefault();
-    const newNavSubject= e.target.textContent;
-    dispatch(update2({navSubject :newNavSubject}));
+    const newNavSubject = e.target.textContent;
+    dispatch(update2({ navSubject: newNavSubject }));
     setPopupPosition(false);
+  };
+
+  const newNavClass = useSelector((state) => state.class.navClass);
+  const newNavSubject = useSelector((state) => state.class.navSubject);
+
+  const [isFetched,setIsFetched] = useState(false);
+const [data2,setData2] = useState("");
+const getData1 = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/data");
+    setData2(res.data);
+    setIsFetched(true);
+
+  } catch (err) {
+    console.log(err);
   }
-  const newNavClass = useSelector(state=>state.class.navClass);
-  const newNavSubject = useSelector(state=>state.class.navSubject)
+};
+
+const fetch = async()=>{
+  await getData1();
+}
+fetch();
+
+const { _id, __v, ...result } = isFetched? data2[0]:{};
+  const classesData = useMemo(() => {
+    const classData = [];
+    for (const className in data) {
+      if (data.hasOwnProperty(className)) {
+        const subjects = Object.keys(data[className].subjects);
+        classData.push({ name: className, subjects });
+      }
+    }
+    return classData;
+  }, [data]);
+console.log(classesData);
+
   return (
     <Container>
       <Wrapper>
         <Left>
-          <LocalFireDepartmentIcon style={{fontSize:40, color:"blue"}}/>
-          <CustomDropdown onClick={handleClick}>{newNavClass && newNavSubject ? `${newNavClass} ${newNavSubject}` :"Class1 Mathematics"}
-          <KeyboardArrowDownTwoToneIcon style={{fontSize:22 }}/>
-          {popUpPosition && <Overlay />}
+          <LocalFireDepartmentIcon style={{ fontSize: 40, color: "blue" }} />
+          <CustomDropdown onClick={handleClick}>
+            {newNavClass && newNavSubject ? `${newNavClass} ${newNavSubject}` : "Class1 Mathematics"}
+            <KeyboardArrowDownTwoToneIcon style={{ fontSize: 22 }} />
+            {popUpPosition && <Overlay />}
           </CustomDropdown>
-          
+
           {popUpPosition && (
             <Popup>
               <Title>Select Subject</Title>
               <Items>
-              {classesData.map((classItem) => (
-                <div key={classItem.name}>
-                  <ClassItem onClick={(e) => handleClassClick(classItem,e)}>
-                    {classItem.name}
-                    <ArrowForwardIosIcon style={{fontSize:13 }}/>
-                  </ClassItem>
-                  {selectedClass === classItem && (
-                    <div>
-                      {classItem.subjects.map((subject) => (
-                        <SubjectItem key={subject}
-                        onClick={handleSubject}
-                        >{subject}</SubjectItem>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+                {isFetched && classesData.map((classItem) => (
+                  <div key={classItem.name}>
+                    <ClassItem onClick={(e) => handleClassClick(classItem, e)}>
+                      {classItem.name}
+                      <ArrowForwardIosIcon style={{ fontSize: 13 }} />
+                    </ClassItem>
+                    {selectedClass === classItem && (
+                      <div>
+                        {classItem.subjects.map((subject) => (
+                          <SubjectItem key={subject} onClick={handleSubject}>
+                            {subject}
+                          </SubjectItem>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </Items>
             </Popup>
           )}
@@ -221,8 +246,8 @@ const Navbar = () => {
         <Right>
           <SearchContainer>
             <InputContainer>
-            <SearchIcon style={{ color: 'grey', fontSize: 20, position: 'relative' ,margin:2,justifyContent:"center"}} />
-            <Input placeholder="Search for Topic and Chapters" />
+              <SearchIcon style={{ color: "grey", fontSize: 20, position: "relative", margin: 2, justifyContent: "center" }} />
+              <Input placeholder="Search for Topic and Chapters" />
             </InputContainer>
           </SearchContainer>
         </Right>

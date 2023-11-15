@@ -6,7 +6,6 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Video from './Video';
 import Questions from './Questions';
 import Theory from './Theory';
-import data from "../data.js";
 import Navbar from './Navbar.jsx';
 import { useSelector } from 'react-redux';
 

@@ -14,8 +14,8 @@ const Video = ({videoIds}) => {
 
   return (
     <div>
-      {videoIds.map((videoId) => (
-        <YouTube key={videoId} videoId={videoId} opts={opts} />
+      { videoIds && videoIds.map((videoId) => (
+        (<YouTube key={videoId} videoId={videoId} opts={opts} />)
       ))}
     </div>
   );
