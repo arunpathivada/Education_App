@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { update1,update2 } from '../redux/dataSlice';
 import { useMemo } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   height: 50px;
@@ -165,12 +166,13 @@ const Navbar = () => {
     dispatch(update1({ navClass: newNavClass }));
     setSelectedClass(clickedClass === selectedClass ? null : clickedClass);
   };
-
-  const handleSubject = (e) => {
+  const navigate = useNavigate();
+  const handleSubjectClick = (e,className, subject) => {
     e.preventDefault();
     const newNavSubject = e.target.textContent;
     dispatch(update2({ navSubject: newNavSubject }));
     setPopupPosition(false);
+    navigate(`/${className}/${subject}`);
   };
 
   const newNavClass = useSelector((state) => state.class.navClass);
@@ -231,7 +233,7 @@ console.log(classesData);
                     {selectedClass === classItem && (
                       <div>
                         {classItem.subjects.map((subject) => (
-                          <SubjectItem key={subject} onClick={handleSubject}>
+                          <SubjectItem key={subject} onClick={(e) => handleSubjectClick(e,classItem.name, subject)}>
                             {subject}
                           </SubjectItem>
                         ))}

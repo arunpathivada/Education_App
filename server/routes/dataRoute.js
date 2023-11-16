@@ -23,25 +23,4 @@ router.get("/",async(req,res)=>{
     }
 })
 
-
-router.put("/", async (req, res) => {
-    const updatedData = req.body; 
-  
-    try {
-      let existingData = await DataModel.findOneAndUpdate();
-  
-      if (!existingData) {
-        return res.status(404).json({ message: 'Document not found' });
-      }
-      existingData.Class1.subjects.English.chapters.Tenses.topics.push(updatedData.Class1.subjects.English.chapters.Tenses.topics);
-      
-      existingData = await existingData.save();
-  
-      res.status(200).json(existingData); 
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-      console.log(err);
-    }
-  });
-  
 export default router;
