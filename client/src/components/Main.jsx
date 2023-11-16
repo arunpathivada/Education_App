@@ -132,7 +132,7 @@ for (const chapter in classData) {
 }
 
   const [selectedClass, setSelectedClass] = useState("Theory");
-  const [selectedBox, setSelectedBox] = useState(null);
+  const [selectedBox, setSelectedBox] = useState("Theory");
   const [mainChapter,setMainchapter] = useState("");
   const [mainTopic,setMaintopic] = useState("");
 
@@ -176,9 +176,6 @@ if (boxData) {
         return <Theory theory = {theory}/>;
     }
   };
-
-
-  
 
   return (
     <MainContainer>
