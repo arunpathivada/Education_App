@@ -99,7 +99,7 @@ const [isFetched,setIsFetched] = useState(false);
 const [data2,setData2] = useState("");
 const getData1 = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/data");
+    const res = await axios.get("https://education-app1.onrender.com/api/data");
     setData2(res.data);
     setIsFetched(true);
 
